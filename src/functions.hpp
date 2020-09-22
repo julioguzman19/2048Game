@@ -9,5 +9,10 @@
 #define functions_hpp
 
 #include <stdio.h>
+#include <vector>
+using namespace std;
 
+void printGrid(vector<int> grid);
+
+vector<int> upLogic(vector<int> grid, int columnNumber);
 #endif /* functions_hpp */
