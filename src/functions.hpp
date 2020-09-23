@@ -2,7 +2,7 @@
 //  functions.hpp
 //  testSFML
 //
-//  Created by Julio guzman on 9/22/20.
+//  Created by Julio Guzman & Colin Mitchell on 9/22/20.
 //
 
 #ifndef functions_hpp
