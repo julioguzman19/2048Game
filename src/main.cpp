@@ -10,13 +10,13 @@ int main()
     
     vector<int> grid(16);
     vector<int> newGrid(16);
-    grid = {2,4,6,8,2,3,3,3,3,3,3,3,3,14,15,16};
-  //  for(int i = 0; i < 16; i++){
-  //    grid[i] = i;
-  //  }
+    grid = {2,4,6,0,0,0,3,3,3,3,3,3,3,14,15,16};
+//    for(int i = 0; i < 16; i++){
+//      grid[i] = i;
+//    }
     printGrid(grid);
     cout << endl;
-    newGrid = upLogic(grid);
+    newGrid = rightLogic(grid);
     printGrid(newGrid);
     cout << endl;
     return 0;
