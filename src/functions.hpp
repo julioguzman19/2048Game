@@ -14,5 +14,5 @@ using namespace std;
 
 void printGrid(vector<int> grid);
 
-vector<int> upLogic(vector<int> grid, int columnNumber);
+vector<int> upLogic(vector<int> grid);
 #endif /* functions_hpp */

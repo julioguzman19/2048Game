@@ -16,7 +16,7 @@ int main()
   //  }
     printGrid(grid);
     cout << endl;
-    newGrid = upLogic(grid,1);
+    newGrid = upLogic(grid);
     printGrid(newGrid);
     cout << endl;
     return 0;

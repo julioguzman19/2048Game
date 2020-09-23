@@ -18,31 +18,51 @@ void printGrid(vector<int> grid){
     }
   }
 }
-vector<int> upLogic(vector<int> grid, int columnNumber){
-  int tempC = 0;
-  vector<int> newGrid = grid;
-  if(newGrid[columnNumber-1] == newGrid[columnNumber+3]){
-    tempC = newGrid[columnNumber-1] + newGrid[columnNumber+3];
-    newGrid[columnNumber-1] = tempC;
-    newGrid[columnNumber+3] = newGrid[columnNumber+7];
-    newGrid[columnNumber+7] = newGrid[columnNumber+9];
-    newGrid[columnNumber+11] = 0;
+vector<int> upLogic(vector<int> grid){
+    vector<int> newGrid = grid;
+    
+    //Looping through each column to apply logic
+    for(int i = 1; i <= 4; i ++){
+        int columnNumber = i;
+        int sumTwoTiles = 0;
+        int endPosition = columnNumber +8;
+        
+        //Comparing vertical tiles 1 & 2
+        //If the same assign sumTwoTiles value to tile 1 & shift others up
+        if(newGrid[columnNumber-1] == newGrid[columnNumber+3]){
+            sumTwoTiles = newGrid[columnNumber-1] + newGrid[columnNumber+3];
+            newGrid[columnNumber-1] = sumTwoTiles;
+            newGrid[columnNumber+3] = newGrid[columnNumber+7];
+            newGrid[columnNumber+7] = newGrid[columnNumber+9];
+            newGrid[columnNumber+11] = 0;
+        }
+       //Comparing vertical tiles 2 & 3
+       //If the same assign sumTwoTiles value to tile 2 & shift others up
+       if(newGrid[columnNumber+3] == newGrid[columnNumber+7]){
+            sumTwoTiles = newGrid[columnNumber+3] + newGrid[columnNumber+7];
+            newGrid[columnNumber+3] = sumTwoTiles;
+            newGrid[columnNumber+7] = newGrid[columnNumber+11];
+            newGrid[columnNumber+11] = 0;
+        }
+       //Comparing vertical tiles 3 & 4
+       //If the same assign sumTwoTiles value to tile 3 & shift others up
+       if(newGrid[columnNumber+7] == newGrid[columnNumber+11]){
+            sumTwoTiles = newGrid[columnNumber+7] + newGrid[columnNumber+11];
+            newGrid[columnNumber+7] = sumTwoTiles;
+            newGrid[columnNumber+11] = 0;
+           
+        }
+        //Moving positions up if a zero
+        while(columnNumber!=endPosition){
+            //Checking if current position zero if yes move the below up
+            if(newGrid[columnNumber -1] == 0){
+                newGrid[columnNumber-1] = newGrid[columnNumber+3];
+                newGrid[columnNumber+3] = newGrid[columnNumber+7];
+                newGrid[columnNumber+7] = newGrid[columnNumber+11];
+                columnNumber -=4;
+            }
+            columnNumber +=4;
+        }
+    }
     return newGrid;
-  }
-  else if(newGrid[columnNumber+3] == newGrid[columnNumber+7]){
-    tempC = newGrid[columnNumber+3] + newGrid[columnNumber+7];
-    newGrid[columnNumber+3] = tempC;
-    newGrid[columnNumber+7] = newGrid[columnNumber+11];
-    newGrid[columnNumber+11] = 0;
-    return newGrid;
-  }
-  else if(newGrid[columnNumber+7] == newGrid[columnNumber+11]){
-    tempC = newGrid[columnNumber+7] + newGrid[columnNumber+11];
-    newGrid[columnNumber+7] = tempC;
-    newGrid[columnNumber+11] = 0;
-    return newGrid;
-  }
-  else{
-    return newGrid;
-  }
 }
