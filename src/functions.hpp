@@ -17,10 +17,12 @@ using namespace std;
 class Grid{
     
     vector<int> numbers;
+    vector<int> randomTileValue;
     vector<sf::RectangleShape> lines;
     vector<sf::RectangleShape> tiles;
     sf::Color color0, color2, color4, color8, color16, color32, color64, color128, color256, color512, color1024, color2048;
-
+    sf::Font font;
+    
  public:
 
     Grid();

@@ -12,8 +12,14 @@ using namespace std;
 
 Grid::Grid(){
     //just some numbers for testing, in the final product we will have full of zeros, and then have a random tile = 2
-    numbers = {0,2,8,8,0,0,4,4,4,4,0,0,4,32,64,128};
-   
+    numbers = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    
+    // vector to use in randomTileGenerator method
+    randomTileValue = {2, 2, 2, 4};
+    
+    addRandomTile();
+    addRandomTile();
+    
     //vertical lines
     for(int i = 1; i < 4; i++){
         sf::RectangleShape line(sf::Vector2f(1.f, 800.f));
@@ -50,10 +56,13 @@ Grid::Grid(){
     color512 =sf::Color(125,125,125);
     color1024 =sf::Color(74,74,74);
     color2048 =sf::Color(0,0,0);
+    
+    font.loadFromFile("../ArialBlack.ttf");
 }
 
 //Use numbers and tiles and draw color in window
 void Grid::drawGrid(sf::RenderWindow& window){
+    
     //draw lines
     for(int i = 0; i < 7; i++){
         window.draw(lines[i]);
@@ -112,38 +121,63 @@ void Grid::drawGrid(sf::RenderWindow& window){
 
         }
         window.draw(tiles[i]);
-        
+    }
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+            
+            sf::Text text;
+            text.setFont(font);
+            text.setString(to_string(numbers[(i*4) + j]));
+            text.setCharacterSize(50.f);
+            text.setFillColor(sf::Color::Black);
+            text.setStyle(sf::Text::Bold);
+           
+            text.setPosition((20.f + j*200.f), (110.f + i*200.f));
+            
+            if(numbers[(i*4) + j] != 0){
+                window.draw(text);
+            }
+        }
     }
 }
 
 //after an action is taken (key is pressed and tiles shifted accordingly) replace one of the 0 tiles with a 2 (or possibly 4)
 void Grid::addRandomTile(){
-    //go through the vector of numbers, see how many zeroes there are, then change that value to a 2 or 4
-    
-    
+    vector<int> zeroLocation;
+    for(int i = 0; i < 16; i++){
+        if(numbers[i] == 0){
+            zeroLocation.push_back(i);
+        }
+    }
+    int randomIndex = zeroLocation[rand() % zeroLocation.size()];
+    numbers[randomIndex] = randomTileValue[rand() % 4];
 }
 
 //for testing
 void Grid::printGrid(){
+    cout << endl;
   for(int i = 0; i < 16; i++){
     cout << numbers[i] << " ";
     if(i == 3 || i == 7 || i == 11 || i == 15){
       cout << endl;
     }
   }
+    cout << endl;
 }
 
 void Grid::upLogic(){
     
+    bool hasChanged = false;
     //Looping through each column to apply logic
     for(int i = 1; i <= 4; i ++){
         int sumTwoTiles = 0;
         int endPosition = i-1; //top row are the ending vector positions
         int whileCount = 4;
-        
+
+    //adding values
         //Comparing vertical tiles 1st and 2nd
         if(numbers[endPosition] == numbers[endPosition+4]){
-            
+            hasChanged = true;
             //If they equal sumTwoTiles
             sumTwoTiles = numbers[endPosition] + numbers[endPosition+4];
             
@@ -159,7 +193,7 @@ void Grid::upLogic(){
         }
         //Comparing vertical tiles 2nd and 3rd
        if(numbers[endPosition+4] == numbers[endPosition+8]){
-           
+            hasChanged = true;
             //If they equal sumTwoTiles
             sumTwoTiles = numbers[endPosition+4] + numbers[endPosition+8];
            
@@ -174,7 +208,8 @@ void Grid::upLogic(){
         }
        //Comparing vertical tiles 3rd and last
        if(numbers[endPosition+8] == numbers[endPosition+12]){
-           
+            hasChanged = true;
+
            //If they equal sumTwoTiles
             sumTwoTiles = numbers[endPosition+8] + numbers[endPosition+12];
            
@@ -186,11 +221,12 @@ void Grid::upLogic(){
            
         }
         
-        //Moving positions up if a zero above them
+    //Moving positions up if a zero above them
         while(whileCount!=0){
             
             //Checking if current position zero if yes move below up
             if(numbers[endPosition] == 0){
+                hasChanged = true;
                 numbers[endPosition] = numbers[endPosition+4];
                 numbers[endPosition+4] = numbers[endPosition+8];
                 numbers[endPosition+8] = numbers[endPosition+12];
@@ -200,12 +236,14 @@ void Grid::upLogic(){
                 whileCount -=1;
             }
             else if(numbers[endPosition+4] == 0){
+                hasChanged = true;
                 numbers[endPosition+4] = numbers[endPosition+8];
                 numbers[endPosition+8] = numbers[endPosition+12];
                 numbers[endPosition+12] = 0;
                 whileCount -=1;
             }
             else if(numbers[endPosition+8] == 0){
+                hasChanged = true;
                 numbers[endPosition+8] = numbers[endPosition+12];
                 numbers[endPosition+12] = 0;
                 whileCount -=1;
@@ -216,10 +254,14 @@ void Grid::upLogic(){
                 whileCount -=1;}
         }
     }
+    if(hasChanged){
+        addRandomTile();
+    }
 }
 
 void Grid::downLogic(){
-    
+    bool hasChanged = false;
+
     //Looping through each column to apply logic
     for(int i = 1; i <= 4; i ++){
         int sumTwoTiles = 0;
@@ -228,7 +270,7 @@ void Grid::downLogic(){
         
         //Comparing vertical tiles starting from bottom
         if(numbers[endPosition] == numbers[endPosition-4]){
-            
+            hasChanged = true;
             //If they equal sumTwoTiles
             sumTwoTiles = numbers[endPosition] + numbers[endPosition-4];
             
@@ -244,7 +286,7 @@ void Grid::downLogic(){
         }
         //Comparing vertical tiles 2nd and 3rd
        if(numbers[endPosition-4] == numbers[endPosition-8]){
-           
+           hasChanged = true;
             //If they equal sumTwoTiles
             sumTwoTiles = numbers[endPosition-4] + numbers[endPosition-8];
            
@@ -259,7 +301,7 @@ void Grid::downLogic(){
         }
        //Comparing vertical tiles 3rd and last
        if(numbers[endPosition-8] == numbers[endPosition-12]){
-           
+           hasChanged = true;
            //If they equal sumTwoTiles
             sumTwoTiles = numbers[endPosition-8] + numbers[endPosition-12];
            
@@ -273,9 +315,9 @@ void Grid::downLogic(){
         
         //Moving positions up if a zero above them
         while(whileCount!=0){
-            
             //Checking if current position zero if yes move below up
             if(numbers[endPosition] == 0){
+                hasChanged = true;
                 numbers[endPosition] = numbers[endPosition-4];
                 numbers[endPosition-4] = numbers[endPosition-8];
                 numbers[endPosition-8] = numbers[endPosition-12];
@@ -285,12 +327,14 @@ void Grid::downLogic(){
                 whileCount -=1;
             }
             else if(numbers[endPosition-4] == 0){
+                hasChanged = true;
                 numbers[endPosition-4] = numbers[endPosition-8];
                 numbers[endPosition-8] = numbers[endPosition-12];
                 numbers[endPosition-12] = 0;
                 whileCount -=1;
             }
             else if(numbers[endPosition-8] == 0){
+                hasChanged = true;
                 numbers[endPosition-8] = numbers[endPosition-12];
                 numbers[endPosition-12] = 0;
                 whileCount -=1;
@@ -301,9 +345,13 @@ void Grid::downLogic(){
                 whileCount -=1;}
         }
     }
+    if(hasChanged){
+        addRandomTile();
+    }
 }
 
 void Grid::rightLogic(){
+    bool hasChanged = false;
     //Looping through each row to apply logic
     for(int i = 1; i <= 4; i ++){
         int rowNumber = i;
@@ -313,7 +361,7 @@ void Grid::rightLogic(){
         
         //Comparing horizontal tiles (right to left) 4th and 3rd
         if(numbers[endPosition] == numbers[endPosition-1]){
-            
+            hasChanged = true;
             //If they equal sumTwoTiles
             sumTwoTiles = numbers[endPosition] + numbers[endPosition-1];
             
@@ -330,7 +378,7 @@ void Grid::rightLogic(){
         
         //Comparing horizontal tiles(right to left) 3rd and 2nd
        if(numbers[endPosition-1] == numbers[endPosition-2]){
-           
+           hasChanged = true;
             //If they equal sumTwoTiles
             sumTwoTiles = numbers[endPosition-1] + numbers[endPosition-2];
            
@@ -346,7 +394,7 @@ void Grid::rightLogic(){
         
         //Comparing horizontal tiles (right to left) 2nd and 1st
        if(numbers[endPosition-2] == numbers[endPosition-3]){
-           
+           hasChanged = true;
            //If they equal sumTwoTiles
             sumTwoTiles = numbers[endPosition-2] + numbers[endPosition-3];
            
@@ -363,6 +411,7 @@ void Grid::rightLogic(){
 
             //Checking if current position zero if yes move to right
             if(numbers[endPosition] == 0){
+                hasChanged = true;
                 numbers[endPosition] = numbers[endPosition-1];
                 numbers[endPosition-1] = numbers[endPosition-2];
                 numbers[endPosition-2] = numbers[endPosition-3];
@@ -372,12 +421,14 @@ void Grid::rightLogic(){
                 whileCount -=1;
             }
             else if(numbers[endPosition-1] == 0){
+                hasChanged = true;
                 numbers[endPosition-1] = numbers[endPosition-2];
                 numbers[endPosition-2] = numbers[endPosition-3];
                 numbers[endPosition-3] = 0;
                 whileCount -=1;
             }
             else if(numbers[endPosition-2] == 0){
+                hasChanged = true;
                 numbers[endPosition-2] = numbers[endPosition-3];
                 numbers[endPosition-3] = 0;
                 whileCount -=1;
@@ -389,10 +440,13 @@ void Grid::rightLogic(){
             
         }
     }
+    if(hasChanged){
+        addRandomTile();
+    }
 }
 
 void Grid::leftLogic(){
-    
+    bool hasChanged = false;
     //Looping through each row to apply logic
     for(int i = 1; i <= 4; i ++){
         int rowNumber = i;
@@ -402,7 +456,7 @@ void Grid::leftLogic(){
         
         //Comparing horizontal tiles (right to left) 4th and 3rd
         if(numbers[endPosition] == numbers[endPosition+1]){
-            
+            hasChanged = true;
             //If they equal sumTwoTiles
             sumTwoTiles = numbers[endPosition] + numbers[endPosition+1];
             
@@ -419,7 +473,7 @@ void Grid::leftLogic(){
         
         //Comparing horizontal tiles(right to left) 3rd and 2nd
        if(numbers[endPosition+1] == numbers[endPosition+2]){
-           
+            hasChanged = true;
             //If they equal sumTwoTiles
             sumTwoTiles = numbers[endPosition+1] + numbers[endPosition+2];
            
@@ -435,7 +489,7 @@ void Grid::leftLogic(){
         
         //Comparing horizontal tiles (right to left) 2nd and 1st
        if(numbers[endPosition+2] == numbers[endPosition+3]){
-           
+           hasChanged = true;
            //If they equal sumTwoTiles
             sumTwoTiles = numbers[endPosition+2] + numbers[endPosition+3];
            
@@ -452,6 +506,7 @@ void Grid::leftLogic(){
 
             //Checking if current position zero if yes move to right
             if(numbers[endPosition] == 0){
+                hasChanged = true;
                 numbers[endPosition] = numbers[endPosition+1];
                 numbers[endPosition+1] = numbers[endPosition+2];
                 numbers[endPosition+2] = numbers[endPosition+3];
@@ -461,12 +516,14 @@ void Grid::leftLogic(){
                 whileCount -=1;
             }
             else if(numbers[endPosition+1] == 0){
+                hasChanged = true;
                 numbers[endPosition+1] = numbers[endPosition+2];
                 numbers[endPosition+2] = numbers[endPosition+3];
                 numbers[endPosition+3] = 0;
                 whileCount -=1;
             }
             else if(numbers[endPosition+2] == 0){
+                hasChanged = true;
                 numbers[endPosition+2] = numbers[endPosition+3];
                 numbers[endPosition+3] = 0;
                 whileCount -=1;
@@ -478,5 +535,7 @@ void Grid::leftLogic(){
             
         }
     }
-    return numbers;
+    if(hasChanged){
+        addRandomTile();
+    }
 }

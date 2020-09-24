@@ -1,5 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include <iostream>
 #include "functions.hpp"
 #include <vector>
@@ -18,11 +20,21 @@
     _____Logic() -
 
  
- Link Color of tile to Logic of Grid
- Generate random tile in empty tiles
- Add loop so process repeats
+ XXXXXXXXLink Color of tile to Logic of Grid
+ XXXXXXXXGenerate random tile in empty tiles
+ XXXXXXXXAdd loop so process repeats
  
- Draw number on tiles
+ XXXXXXXXonly add tile if something moves
+ 
+ XXXXXXXXDraw number on tiles
+ XXXXXXXXstart game with random placement
+ end program if space/esc is hit
+ restart button enter?
+ add instructions
+ kill screen
+ move tracker/score
+ 
+ 
  */
 
 using namespace std;
