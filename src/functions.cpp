@@ -10,7 +10,55 @@
 #include <vector>
 using namespace std;
 
-void printGrid(vector<int> grid){
+Grid::Grid(){
+    numbers = {0,0,6,6,0,0,3,3,3,3,0,0,3,14,15,16};
+      //vertical lines
+    for(int i = 1; i < 4; i++){
+        sf::RectangleShape line(sf::Vector2f(1.f, 800.f));
+        line.setPosition(200.f * i, 100.f);
+        lines.push_back(line);
+    }
+    
+    //horizontal lines
+    for(int i = 0; i < 4; i++){
+        sf::RectangleShape line(sf::Vector2f(800.f, 1.f));
+        line.setPosition(0.f, (i*200.f + 100.f));
+    }
+    
+    //tiles row 1
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+            sf::RectangleShape tile(sf::Vector2f(180.f, 180.f));
+            tile.setPosition((10.f + j*200.f), (110.f + i*200.f));
+            tiles.push_back(tile);
+        }
+    }
+    
+    color0 = sf::Color(255, 255, 255);
+    color2 = sf::Color(238, 232, 170);
+    color4 =sf::Color(255,255,0);
+    color8 =sf::Color(0,255,0);
+    color16 =sf::Color(34,139,34);
+    color32 =sf::Color(0,100,0);
+    color64 =sf::Color(0,191,255);
+    color128 =sf::Color(65,105,225);
+    color256 =sf::Color(0,0,255);
+    color512 =sf::Color(125,125,125);
+    color1024 =sf::Color(74,74,74);
+    color2048 =sf::Color(0,0,0);
+}
+
+
+void Grid::drawGrid(sf::RenderWindow window){
+    
+} //Use numbers and tiles and draw color in window
+
+void Grid::addRandomTile(){
+    
+}
+
+
+void Grid::printGrid(vector<int> grid){
   for(int i = 0; i < 16; i++){
     cout << grid[i] << " ";
     if(i == 3 || i == 7 || i == 11 || i == 15){
@@ -18,7 +66,8 @@ void printGrid(vector<int> grid){
     }
   }
 }
-vector<int> upLogic(vector<int> grid){
+
+vector<int> Grid::upLogic(vector<int> grid){
     vector<int> newGrid = grid;
     
     //Looping through each column to apply logic
