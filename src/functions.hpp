@@ -20,23 +20,25 @@ class Grid{
     vector<sf::RectangleShape> lines;
     vector<sf::RectangleShape> tiles;
     sf::Color color0, color2, color4, color8, color16, color32, color64, color128, color256, color512, color1024, color2048;
-    
+
+ public:
+
     Grid();
     
-    void drawGrid(sf::RenderWindow window); //Use numbers and tiles and draw color in window
+    void drawGrid(sf::RenderWindow& window); //Use numbers and tiles and draw color in window
     
     void addRandomTile();
     
 //logic
-    void printGrid(vector<int> grid);
+    void printGrid();
 
-    vector<int> upLogic(vector<int> grid);
+    void upLogic();
 
-    vector<int> rightLogic(vector<int> grid);
+    void rightLogic();
 
-    vector<int> downLogic(vector<int> grid);
+    void downLogic();
 
-    vector<int> leftLogic(vector<int> grid);
+    void leftLogic();
     
     
 };

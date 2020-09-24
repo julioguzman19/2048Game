@@ -11,8 +11,10 @@
 using namespace std;
 
 Grid::Grid(){
-    numbers = {0,0,6,6,0,0,3,3,3,3,0,0,3,14,15,16};
-      //vertical lines
+    //just some numbers for testing, in the final product we will have full of zeros, and then have a random tile = 2
+    numbers = {0,2,8,8,0,0,4,4,4,4,0,0,4,32,64,128};
+   
+    //vertical lines
     for(int i = 1; i < 4; i++){
         sf::RectangleShape line(sf::Vector2f(1.f, 800.f));
         line.setPosition(200.f * i, 100.f);
@@ -23,9 +25,10 @@ Grid::Grid(){
     for(int i = 0; i < 4; i++){
         sf::RectangleShape line(sf::Vector2f(800.f, 1.f));
         line.setPosition(0.f, (i*200.f + 100.f));
+        lines.push_back(line);
     }
     
-    //tiles row 1
+    //tiles
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 4; j++){
             sf::RectangleShape tile(sf::Vector2f(180.f, 180.f));
@@ -34,6 +37,7 @@ Grid::Grid(){
         }
     }
     
+    //set colors for different numbers
     color0 = sf::Color(255, 255, 255);
     color2 = sf::Color(238, 232, 170);
     color4 =sf::Color(255,255,0);
@@ -48,27 +52,88 @@ Grid::Grid(){
     color2048 =sf::Color(0,0,0);
 }
 
+//Use numbers and tiles and draw color in window
+void Grid::drawGrid(sf::RenderWindow& window){
+    //draw lines
+    for(int i = 0; i < 7; i++){
+        window.draw(lines[i]);
+    }
+    //draw tiles
+    for(int i = 0; i < 16; i++){
+        switch (numbers[i]){
+                
+            case 0:
+                tiles[i].setFillColor(color0);
+                break;
+                
+            case 2:
+                tiles[i].setFillColor(color2);
+                break;
 
-void Grid::drawGrid(sf::RenderWindow window){
-    
-} //Use numbers and tiles and draw color in window
+            case 4:
+                tiles[i].setFillColor(color4);
+                break;
 
+            case 8:
+                tiles[i].setFillColor(color8);
+                break;
+
+            case 16:
+                tiles[i].setFillColor(color16);
+                break;
+
+            case 32:
+                tiles[i].setFillColor(color32);
+                break;
+
+            case 64:
+                tiles[i].setFillColor(color64);
+                break;
+
+            case 128:
+                tiles[i].setFillColor(color128);
+                break;
+
+            case 256:
+                tiles[i].setFillColor(color256);
+                break;
+
+            case 512:
+                tiles[i].setFillColor(color512);
+                break;
+
+            case 1024:
+                tiles[i].setFillColor(color1024);
+                break;
+
+            case 2048:
+                tiles[i].setFillColor(color2048);
+                break;
+
+        }
+        window.draw(tiles[i]);
+        
+    }
+}
+
+//after an action is taken (key is pressed and tiles shifted accordingly) replace one of the 0 tiles with a 2 (or possibly 4)
 void Grid::addRandomTile(){
+    //go through the vector of numbers, see how many zeroes there are, then change that value to a 2 or 4
+    
     
 }
 
-
-void Grid::printGrid(vector<int> grid){
+//for testing
+void Grid::printGrid(){
   for(int i = 0; i < 16; i++){
-    cout << grid[i] << " ";
+    cout << numbers[i] << " ";
     if(i == 3 || i == 7 || i == 11 || i == 15){
       cout << endl;
     }
   }
 }
 
-vector<int> Grid::upLogic(vector<int> grid){
-    vector<int> newGrid = grid;
+void Grid::upLogic(){
     
     //Looping through each column to apply logic
     for(int i = 1; i <= 4; i ++){
@@ -77,47 +142,47 @@ vector<int> Grid::upLogic(vector<int> grid){
         int whileCount = 4;
         
         //Comparing vertical tiles 1st and 2nd
-        if(newGrid[endPosition] == newGrid[endPosition+4]){
+        if(numbers[endPosition] == numbers[endPosition+4]){
             
             //If they equal sumTwoTiles
-            sumTwoTiles = newGrid[endPosition] + newGrid[endPosition+4];
+            sumTwoTiles = numbers[endPosition] + numbers[endPosition+4];
             
             //Set sum value to tile
-            newGrid[endPosition] = sumTwoTiles;
+            numbers[endPosition] = sumTwoTiles;
             
             //Shift below tiles up
-            newGrid[endPosition+4] = newGrid[endPosition+8];
-            newGrid[endPosition+8] = newGrid[endPosition+12];
+            numbers[endPosition+4] = numbers[endPosition+8];
+            numbers[endPosition+8] = numbers[endPosition+12];
             
             //Add zero to new last tile
-            newGrid[endPosition+12] = 0;
+            numbers[endPosition+12] = 0;
         }
         //Comparing vertical tiles 2nd and 3rd
-       if(newGrid[endPosition+4] == newGrid[endPosition+8]){
+       if(numbers[endPosition+4] == numbers[endPosition+8]){
            
             //If they equal sumTwoTiles
-            sumTwoTiles = newGrid[endPosition+4] + newGrid[endPosition+8];
+            sumTwoTiles = numbers[endPosition+4] + numbers[endPosition+8];
            
             //Set sum value to tile
-            newGrid[endPosition+4] = sumTwoTiles;
+            numbers[endPosition+4] = sumTwoTiles;
            
             //Shift below tile up
-            newGrid[endPosition+8] = newGrid[endPosition+12];
+            numbers[endPosition+8] = numbers[endPosition+12];
            
             //Add zero to new last tile
-            newGrid[endPosition+12] = 0;
+            numbers[endPosition+12] = 0;
         }
        //Comparing vertical tiles 3rd and last
-       if(newGrid[endPosition+8] == newGrid[endPosition+12]){
+       if(numbers[endPosition+8] == numbers[endPosition+12]){
            
            //If they equal sumTwoTiles
-            sumTwoTiles = newGrid[endPosition+8] + newGrid[endPosition+12];
+            sumTwoTiles = numbers[endPosition+8] + numbers[endPosition+12];
            
            //Set sum value to tile
-            newGrid[endPosition+8] = sumTwoTiles;
+            numbers[endPosition+8] = sumTwoTiles;
            
             //Add zero to new last tile
-            newGrid[endPosition+12] = 0;
+            numbers[endPosition+12] = 0;
            
         }
         
@@ -125,24 +190,24 @@ vector<int> Grid::upLogic(vector<int> grid){
         while(whileCount!=0){
             
             //Checking if current position zero if yes move below up
-            if(newGrid[endPosition] == 0){
-                newGrid[endPosition] = newGrid[endPosition+4];
-                newGrid[endPosition+4] = newGrid[endPosition+8];
-                newGrid[endPosition+8] = newGrid[endPosition+12];
-                newGrid[endPosition+12] = 0;
+            if(numbers[endPosition] == 0){
+                numbers[endPosition] = numbers[endPosition+4];
+                numbers[endPosition+4] = numbers[endPosition+8];
+                numbers[endPosition+8] = numbers[endPosition+12];
+                numbers[endPosition+12] = 0;
 
                 //Rechecking same position just in case a zero replaced the zero
                 whileCount -=1;
             }
-            else if(newGrid[endPosition+4] == 0){
-                newGrid[endPosition+4] = newGrid[endPosition+8];
-                newGrid[endPosition+8] = newGrid[endPosition+12];
-                newGrid[endPosition+12] = 0;
+            else if(numbers[endPosition+4] == 0){
+                numbers[endPosition+4] = numbers[endPosition+8];
+                numbers[endPosition+8] = numbers[endPosition+12];
+                numbers[endPosition+12] = 0;
                 whileCount -=1;
             }
-            else if(newGrid[endPosition+8] == 0){
-                newGrid[endPosition+8] = newGrid[endPosition+12];
-                newGrid[endPosition+12] = 0;
+            else if(numbers[endPosition+8] == 0){
+                numbers[endPosition+8] = numbers[endPosition+12];
+                numbers[endPosition+12] = 0;
                 whileCount -=1;
             }
 
@@ -151,11 +216,9 @@ vector<int> Grid::upLogic(vector<int> grid){
                 whileCount -=1;}
         }
     }
-    return newGrid;
 }
 
-vector<int> downLogic(vector<int> grid){
-    vector<int> newGrid = grid;
+void Grid::downLogic(){
     
     //Looping through each column to apply logic
     for(int i = 1; i <= 4; i ++){
@@ -164,47 +227,47 @@ vector<int> downLogic(vector<int> grid){
         int whileCount = 4;
         
         //Comparing vertical tiles starting from bottom
-        if(newGrid[endPosition] == newGrid[endPosition-4]){
+        if(numbers[endPosition] == numbers[endPosition-4]){
             
             //If they equal sumTwoTiles
-            sumTwoTiles = newGrid[endPosition] + newGrid[endPosition-4];
+            sumTwoTiles = numbers[endPosition] + numbers[endPosition-4];
             
             //Set sum value to tile
-            newGrid[endPosition] = sumTwoTiles;
+            numbers[endPosition] = sumTwoTiles;
             
             //Shift above tiles down
-            newGrid[endPosition-4] = newGrid[endPosition-8];
-            newGrid[endPosition-8] = newGrid[endPosition-12];
+            numbers[endPosition-4] = numbers[endPosition-8];
+            numbers[endPosition-8] = numbers[endPosition-12];
             
             //Add zero to new tile
-            newGrid[endPosition-12] = 0;
+            numbers[endPosition-12] = 0;
         }
         //Comparing vertical tiles 2nd and 3rd
-       if(newGrid[endPosition-4] == newGrid[endPosition-8]){
+       if(numbers[endPosition-4] == numbers[endPosition-8]){
            
             //If they equal sumTwoTiles
-            sumTwoTiles = newGrid[endPosition-4] + newGrid[endPosition-8];
+            sumTwoTiles = numbers[endPosition-4] + numbers[endPosition-8];
            
             //Set sum value to tile
-            newGrid[endPosition-4] = sumTwoTiles;
+            numbers[endPosition-4] = sumTwoTiles;
            
             //Shift below tile up
-            newGrid[endPosition-8] = newGrid[endPosition+12];
+            numbers[endPosition-8] = numbers[endPosition+12];
            
             //Add zero to new tile
-            newGrid[endPosition-12] = 0;
+            numbers[endPosition-12] = 0;
         }
        //Comparing vertical tiles 3rd and last
-       if(newGrid[endPosition-8] == newGrid[endPosition-12]){
+       if(numbers[endPosition-8] == numbers[endPosition-12]){
            
            //If they equal sumTwoTiles
-            sumTwoTiles = newGrid[endPosition-8] + newGrid[endPosition-12];
+            sumTwoTiles = numbers[endPosition-8] + numbers[endPosition-12];
            
            //Set sum value to tile
-            newGrid[endPosition-8] = sumTwoTiles;
+            numbers[endPosition-8] = sumTwoTiles;
            
             //Add zero to new tile
-            newGrid[endPosition-12] = 0;
+            numbers[endPosition-12] = 0;
            
         }
         
@@ -212,24 +275,24 @@ vector<int> downLogic(vector<int> grid){
         while(whileCount!=0){
             
             //Checking if current position zero if yes move below up
-            if(newGrid[endPosition] == 0){
-                newGrid[endPosition] = newGrid[endPosition-4];
-                newGrid[endPosition-4] = newGrid[endPosition-8];
-                newGrid[endPosition-8] = newGrid[endPosition-12];
-                newGrid[endPosition-12] = 0;
+            if(numbers[endPosition] == 0){
+                numbers[endPosition] = numbers[endPosition-4];
+                numbers[endPosition-4] = numbers[endPosition-8];
+                numbers[endPosition-8] = numbers[endPosition-12];
+                numbers[endPosition-12] = 0;
 
                 //Rechecking same position just in case a zero replaced the zero
                 whileCount -=1;
             }
-            else if(newGrid[endPosition-4] == 0){
-                newGrid[endPosition-4] = newGrid[endPosition-8];
-                newGrid[endPosition-8] = newGrid[endPosition-12];
-                newGrid[endPosition-12] = 0;
+            else if(numbers[endPosition-4] == 0){
+                numbers[endPosition-4] = numbers[endPosition-8];
+                numbers[endPosition-8] = numbers[endPosition-12];
+                numbers[endPosition-12] = 0;
                 whileCount -=1;
             }
-            else if(newGrid[endPosition-8] == 0){
-                newGrid[endPosition-8] = newGrid[endPosition-12];
-                newGrid[endPosition-12] = 0;
+            else if(numbers[endPosition-8] == 0){
+                numbers[endPosition-8] = numbers[endPosition-12];
+                numbers[endPosition-12] = 0;
                 whileCount -=1;
             }
 
@@ -238,12 +301,9 @@ vector<int> downLogic(vector<int> grid){
                 whileCount -=1;}
         }
     }
-    return newGrid;
 }
 
-vector<int> rightLogic(vector<int> grid){
-    vector<int> newGrid = grid;
-    
+void Grid::rightLogic(){
     //Looping through each row to apply logic
     for(int i = 1; i <= 4; i ++){
         int rowNumber = i;
@@ -252,49 +312,49 @@ vector<int> rightLogic(vector<int> grid){
         int whileCount = 4;
         
         //Comparing horizontal tiles (right to left) 4th and 3rd
-        if(newGrid[endPosition] == newGrid[endPosition-1]){
+        if(numbers[endPosition] == numbers[endPosition-1]){
             
             //If they equal sumTwoTiles
-            sumTwoTiles = newGrid[endPosition] + newGrid[endPosition-1];
+            sumTwoTiles = numbers[endPosition] + numbers[endPosition-1];
             
             //Set sum value to tile
-            newGrid[endPosition] = sumTwoTiles;
+            numbers[endPosition] = sumTwoTiles;
             
             //Shift left tiles to the right
-            newGrid[endPosition-1] = newGrid[endPosition-2];
-            newGrid[endPosition-2] = newGrid[endPosition-3];
+            numbers[endPosition-1] = numbers[endPosition-2];
+            numbers[endPosition-2] = numbers[endPosition-3];
             
             //Add zero to new last tile
-            newGrid[endPosition-3] = 0;
+            numbers[endPosition-3] = 0;
         }
         
         //Comparing horizontal tiles(right to left) 3rd and 2nd
-       if(newGrid[endPosition-1] == newGrid[endPosition-2]){
+       if(numbers[endPosition-1] == numbers[endPosition-2]){
            
             //If they equal sumTwoTiles
-            sumTwoTiles = newGrid[endPosition-1] + newGrid[endPosition-2];
+            sumTwoTiles = numbers[endPosition-1] + numbers[endPosition-2];
            
             //Set sum value to tile
-            newGrid[endPosition-1] = sumTwoTiles;
+            numbers[endPosition-1] = sumTwoTiles;
            
             //Shift left tile right
-            newGrid[endPosition-2] = newGrid[endPosition-3];
+            numbers[endPosition-2] = numbers[endPosition-3];
            
             //Add zero to new last tile
-            newGrid[endPosition-3] = 0;
+            numbers[endPosition-3] = 0;
         }
         
         //Comparing horizontal tiles (right to left) 2nd and 1st
-       if(newGrid[endPosition-2] == newGrid[endPosition-3]){
+       if(numbers[endPosition-2] == numbers[endPosition-3]){
            
            //If they equal sumTwoTiles
-            sumTwoTiles = newGrid[endPosition-2] + newGrid[endPosition-3];
+            sumTwoTiles = numbers[endPosition-2] + numbers[endPosition-3];
            
            //Set sum value to tile
-            newGrid[endPosition-2] = sumTwoTiles;
+            numbers[endPosition-2] = sumTwoTiles;
            
             //Add zero to new last tile
-            newGrid[endPosition-3] = 0;
+            numbers[endPosition-3] = 0;
            
         }
         
@@ -302,24 +362,24 @@ vector<int> rightLogic(vector<int> grid){
         while(whileCount!=0){
 
             //Checking if current position zero if yes move to right
-            if(newGrid[endPosition] == 0){
-                newGrid[endPosition] = newGrid[endPosition-1];
-                newGrid[endPosition-1] = newGrid[endPosition-2];
-                newGrid[endPosition-2] = newGrid[endPosition-3];
-                newGrid[endPosition-3] = 0;
+            if(numbers[endPosition] == 0){
+                numbers[endPosition] = numbers[endPosition-1];
+                numbers[endPosition-1] = numbers[endPosition-2];
+                numbers[endPosition-2] = numbers[endPosition-3];
+                numbers[endPosition-3] = 0;
 
                 //Rechecking same position just in case a zero replaced the zero
                 whileCount -=1;
             }
-            else if(newGrid[endPosition-1] == 0){
-                newGrid[endPosition-1] = newGrid[endPosition-2];
-                newGrid[endPosition-2] = newGrid[endPosition-3];
-                newGrid[endPosition-3] = 0;
+            else if(numbers[endPosition-1] == 0){
+                numbers[endPosition-1] = numbers[endPosition-2];
+                numbers[endPosition-2] = numbers[endPosition-3];
+                numbers[endPosition-3] = 0;
                 whileCount -=1;
             }
-            else if(newGrid[endPosition-2] == 0){
-                newGrid[endPosition-2] = newGrid[endPosition-3];
-                newGrid[endPosition-3] = 0;
+            else if(numbers[endPosition-2] == 0){
+                numbers[endPosition-2] = numbers[endPosition-3];
+                numbers[endPosition-3] = 0;
                 whileCount -=1;
             }
 
@@ -329,11 +389,9 @@ vector<int> rightLogic(vector<int> grid){
             
         }
     }
-    return newGrid;
 }
 
-vector<int> leftLogic(vector<int> grid){
-    vector<int> newGrid = grid;
+void Grid::leftLogic(){
     
     //Looping through each row to apply logic
     for(int i = 1; i <= 4; i ++){
@@ -343,49 +401,49 @@ vector<int> leftLogic(vector<int> grid){
         int whileCount = 4;
         
         //Comparing horizontal tiles (right to left) 4th and 3rd
-        if(newGrid[endPosition] == newGrid[endPosition+1]){
+        if(numbers[endPosition] == numbers[endPosition+1]){
             
             //If they equal sumTwoTiles
-            sumTwoTiles = newGrid[endPosition] + newGrid[endPosition+1];
+            sumTwoTiles = numbers[endPosition] + numbers[endPosition+1];
             
             //Set sum value to tile
-            newGrid[endPosition] = sumTwoTiles;
+            numbers[endPosition] = sumTwoTiles;
             
             //Shift left tiles to the right
-            newGrid[endPosition+1] = newGrid[endPosition+2];
-            newGrid[endPosition+2] = newGrid[endPosition+3];
+            numbers[endPosition+1] = numbers[endPosition+2];
+            numbers[endPosition+2] = numbers[endPosition+3];
             
             //Add zero to new last tile
-            newGrid[endPosition+3] = 0;
+            numbers[endPosition+3] = 0;
         }
         
         //Comparing horizontal tiles(right to left) 3rd and 2nd
-       if(newGrid[endPosition+1] == newGrid[endPosition+2]){
+       if(numbers[endPosition+1] == numbers[endPosition+2]){
            
             //If they equal sumTwoTiles
-            sumTwoTiles = newGrid[endPosition+1] + newGrid[endPosition+2];
+            sumTwoTiles = numbers[endPosition+1] + numbers[endPosition+2];
            
             //Set sum value to tile
-            newGrid[endPosition+1] = sumTwoTiles;
+            numbers[endPosition+1] = sumTwoTiles;
            
             //Shift left tile right
-            newGrid[endPosition+2] = newGrid[endPosition+3];
+            numbers[endPosition+2] = numbers[endPosition+3];
            
             //Add zero to new last tile
-            newGrid[endPosition+3] = 0;
+            numbers[endPosition+3] = 0;
         }
         
         //Comparing horizontal tiles (right to left) 2nd and 1st
-       if(newGrid[endPosition+2] == newGrid[endPosition+3]){
+       if(numbers[endPosition+2] == numbers[endPosition+3]){
            
            //If they equal sumTwoTiles
-            sumTwoTiles = newGrid[endPosition+2] + newGrid[endPosition+3];
+            sumTwoTiles = numbers[endPosition+2] + numbers[endPosition+3];
            
            //Set sum value to tile
-            newGrid[endPosition+2] = sumTwoTiles;
+            numbers[endPosition+2] = sumTwoTiles;
            
             //Add zero to new last tile
-            newGrid[endPosition+3] = 0;
+            numbers[endPosition+3] = 0;
            
         }
         
@@ -393,24 +451,24 @@ vector<int> leftLogic(vector<int> grid){
         while(whileCount!=0){
 
             //Checking if current position zero if yes move to right
-            if(newGrid[endPosition] == 0){
-                newGrid[endPosition] = newGrid[endPosition+1];
-                newGrid[endPosition+1] = newGrid[endPosition+2];
-                newGrid[endPosition+2] = newGrid[endPosition+3];
-                newGrid[endPosition+3] = 0;
+            if(numbers[endPosition] == 0){
+                numbers[endPosition] = numbers[endPosition+1];
+                numbers[endPosition+1] = numbers[endPosition+2];
+                numbers[endPosition+2] = numbers[endPosition+3];
+                numbers[endPosition+3] = 0;
 
                 //Rechecking same position just in case a zero replaced the zero
                 whileCount -=1;
             }
-            else if(newGrid[endPosition+1] == 0){
-                newGrid[endPosition+1] = newGrid[endPosition+2];
-                newGrid[endPosition+2] = newGrid[endPosition+3];
-                newGrid[endPosition+3] = 0;
+            else if(numbers[endPosition+1] == 0){
+                numbers[endPosition+1] = numbers[endPosition+2];
+                numbers[endPosition+2] = numbers[endPosition+3];
+                numbers[endPosition+3] = 0;
                 whileCount -=1;
             }
-            else if(newGrid[endPosition+2] == 0){
-                newGrid[endPosition+2] = newGrid[endPosition+3];
-                newGrid[endPosition+3] = 0;
+            else if(numbers[endPosition+2] == 0){
+                numbers[endPosition+2] = numbers[endPosition+3];
+                numbers[endPosition+3] = 0;
                 whileCount -=1;
             }
 
@@ -420,5 +478,5 @@ vector<int> leftLogic(vector<int> grid){
             
         }
     }
-    return newGrid;
+    return numbers;
 }
