@@ -20,6 +20,8 @@ Grid::Grid(){
     addRandomTile();
     addRandomTile();
     
+    score = 0;
+    
     //vertical lines
     for(int i = 1; i < 4; i++){
         sf::RectangleShape line(sf::Vector2f(1.f, 800.f));
@@ -49,7 +51,7 @@ Grid::Grid(){
     color4 =sf::Color(255,255,0);
     color8 =sf::Color(0,255,0);
     color16 =sf::Color(34,139,34);
-    color32 =sf::Color(0,100,0);
+    color32 =sf::Color(0,255,255);
     color64 =sf::Color(0,191,255);
     color128 =sf::Color(65,105,225);
     color256 =sf::Color(0,0,255);
@@ -58,10 +60,31 @@ Grid::Grid(){
     color2048 =sf::Color(0,0,0);
     
     font.loadFromFile("../ArialBlack.ttf");
+    font2.loadFromFile("../Helvetica.ttc");
 }
 
 //Use numbers and tiles and draw color in window
 void Grid::drawGrid(sf::RenderWindow& window){
+    
+    sf::Text instructions;
+    instructions.setFont(font2);
+    instructions.setString("Add the numbers to get to 2048!\nUse arrow keys to shift tiles.\nRestart: press SPACE.    Exit: press ESC.");
+    instructions.setCharacterSize(25.f);
+    instructions.setFillColor(sf::Color(245, 245, 245));
+    instructions.setStyle(sf::Text::Regular);
+    instructions.setPosition(10.f, 10.f);
+    
+    window.draw(instructions);
+    
+    
+    sf::Text scoreText;
+    scoreText.setFont(font2);
+    scoreText.setString("SCORE: " + to_string(score));
+    scoreText.setCharacterSize(30.f);
+    scoreText.setFillColor(sf::Color(255, 105, 180));
+    scoreText.setPosition(575.f, 25.f);
+    
+    window.draw(scoreText);
     
     //draw lines
     for(int i = 0; i < 7; i++){
@@ -162,7 +185,7 @@ void Grid::printGrid(){
       cout << endl;
     }
   }
-    cout << endl;
+    cout << score << endl;
 }
 
 void Grid::upLogic(){
@@ -190,6 +213,8 @@ void Grid::upLogic(){
             
             //Add zero to new last tile
             numbers[endPosition+12] = 0;
+            //track score
+            score += sumTwoTiles;
         }
         //Comparing vertical tiles 2nd and 3rd
        if(numbers[endPosition+4] == numbers[endPosition+8]){
@@ -205,6 +230,8 @@ void Grid::upLogic(){
            
             //Add zero to new last tile
             numbers[endPosition+12] = 0;
+           //track score
+           score += sumTwoTiles;
         }
        //Comparing vertical tiles 3rd and last
        if(numbers[endPosition+8] == numbers[endPosition+12]){
@@ -218,7 +245,8 @@ void Grid::upLogic(){
            
             //Add zero to new last tile
             numbers[endPosition+12] = 0;
-           
+           //track score
+           score += sumTwoTiles;
         }
         
     //Moving positions up if a zero above them
@@ -283,6 +311,8 @@ void Grid::downLogic(){
             
             //Add zero to new tile
             numbers[endPosition-12] = 0;
+            //track score
+            score += sumTwoTiles;
         }
         //Comparing vertical tiles 2nd and 3rd
        if(numbers[endPosition-4] == numbers[endPosition-8]){
@@ -298,6 +328,8 @@ void Grid::downLogic(){
            
             //Add zero to new tile
             numbers[endPosition-12] = 0;
+           //track score
+           score += sumTwoTiles;
         }
        //Comparing vertical tiles 3rd and last
        if(numbers[endPosition-8] == numbers[endPosition-12]){
@@ -310,7 +342,8 @@ void Grid::downLogic(){
            
             //Add zero to new tile
             numbers[endPosition-12] = 0;
-           
+           //track score
+           score += sumTwoTiles;
         }
         
         //Moving positions up if a zero above them
@@ -374,6 +407,8 @@ void Grid::rightLogic(){
             
             //Add zero to new last tile
             numbers[endPosition-3] = 0;
+            //track score
+            score += sumTwoTiles;
         }
         
         //Comparing horizontal tiles(right to left) 3rd and 2nd
@@ -390,6 +425,8 @@ void Grid::rightLogic(){
            
             //Add zero to new last tile
             numbers[endPosition-3] = 0;
+           //track score
+           score += sumTwoTiles;
         }
         
         //Comparing horizontal tiles (right to left) 2nd and 1st
@@ -403,7 +440,8 @@ void Grid::rightLogic(){
            
             //Add zero to new last tile
             numbers[endPosition-3] = 0;
-           
+           //track score
+           score += sumTwoTiles;
         }
         
         //Moving positions to the right if a position to the right of them
@@ -469,6 +507,8 @@ void Grid::leftLogic(){
             
             //Add zero to new last tile
             numbers[endPosition+3] = 0;
+            //track score
+            score += sumTwoTiles;
         }
         
         //Comparing horizontal tiles(right to left) 3rd and 2nd
@@ -485,6 +525,8 @@ void Grid::leftLogic(){
            
             //Add zero to new last tile
             numbers[endPosition+3] = 0;
+           //track score
+           score += sumTwoTiles;
         }
         
         //Comparing horizontal tiles (right to left) 2nd and 1st
@@ -498,7 +540,8 @@ void Grid::leftLogic(){
            
             //Add zero to new last tile
             numbers[endPosition+3] = 0;
-           
+           //track score
+           score += sumTwoTiles;
         }
         
         //Moving positions to the right if a position to the right of them

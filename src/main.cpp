@@ -28,11 +28,11 @@
  
  XXXXXXXXDraw number on tiles
  XXXXXXXXstart game with random placement
- end program if space/esc is hit
- restart button enter?
- add instructions
+ XXXXXXXXend program if esc is hit
+ XXXXXXXXrestart button space
+ XXXXXXXXadd instructions
  kill screen
- move tracker/score
+ /move tracker/score
  
  
  */
@@ -95,6 +95,13 @@ int main()
                        gridClass.downLogic();
                        gridClass.printGrid();
                        break;
+                       
+                   case sf::Keyboard::Escape:
+                       window.close();
+                       break;
+                       
+                   case sf::Keyboard::Space:
+                       gridClass = Grid();
                }
            }
        }
