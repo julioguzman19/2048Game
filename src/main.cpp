@@ -31,7 +31,6 @@
  XXXXXXXXend program if esc is hit
  XXXXXXXXrestart button space
  XXXXXXXXadd instructions
- kill screen?
  XXXXXXXXmove tracker/score
  
  
@@ -44,22 +43,8 @@ int main()
 {
     
     Grid gridClass;
-    
-    gridClass.printGrid();
-    
-//    for(int i = 0; i < 16; i++){
-//      grid[i] = i;
-//    }
-    //printGrid(grid);
-    //cout << endl;
-    //newGrid = leftLogic(grid);
-    //printGrid(newGrid);
-     //   cout << endl;
 
-    
     //Graphics stuff starting
-
-
    sf::RenderWindow window(sf::VideoMode(800, 900), "My window");
 
    // run the program as long as the window is open
@@ -78,22 +63,18 @@ int main()
                        
                    case sf::Keyboard::Left:
                        gridClass.leftLogic();
-                       gridClass.printGrid();
                        break;
                        
                    case sf::Keyboard::Right:
                        gridClass.rightLogic();
-                       gridClass.printGrid();
                        break;
                        
                    case sf::Keyboard::Up:
                        gridClass.upLogic();
-                       gridClass.printGrid();
                        break;
                     
                    case sf::Keyboard::Down:
                        gridClass.downLogic();
-                       gridClass.printGrid();
                        break;
                        
                    case sf::Keyboard::Escape:

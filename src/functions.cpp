@@ -178,19 +178,6 @@ void Grid::addRandomTile(){
     numbers[randomIndex] = randomTileValue[rand() % 4];
 }
 
-//for testing
-void Grid::printGrid(){
-    cout << endl;
-   
-//  for(int i = 0; i < 16; i++){
-//    cout << numbers[i] << " ";
-//    if(i == 3 || i == 7 || i == 11 || i == 15){
-//      cout << endl;
-//    }
-//  }
-//    cout << score << endl;
-}
-
 void Grid::upLogic(){
     
     bool hasChanged = false;
@@ -259,7 +246,6 @@ void Grid::upLogic(){
             numbers[endPosition+12] = 0;
             //track score
             score += sumTwoTiles;
-            cout << endPosition+12;
         }
         //Comparing vertical tiles 2nd and 3rd
        if(numbers[endPosition+4] == numbers[endPosition+8] && numbers[endPosition+4]!=0 ){

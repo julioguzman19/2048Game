@@ -34,8 +34,6 @@ class Grid{
     void addRandomTile();
     
 //logic
-    void printGrid();
-
     void upLogic();
 
     void rightLogic();
