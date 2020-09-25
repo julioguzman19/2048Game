@@ -59,12 +59,14 @@ Grid::Grid(){
     color1024 =sf::Color(74,74,74);
     color2048 =sf::Color(0,0,0);
     
-    font.loadFromFile("/Users/julioguzman/2048Game/ArialBlack.ttf");
-    font2.loadFromFile("/Users/julioguzman/2048Game/Helvetica.ttc");
+    font.loadFromFile("../ArialBlack.ttf");
+    font2.loadFromFile("../Helvetica.ttc");
 }
 
 //Use numbers and tiles and draw color in window
 void Grid::drawGrid(sf::RenderWindow& window){
+    
+    window.clear(sf::Color::Black);
     
     sf::Text instructions;
     instructions.setFont(font2);
@@ -413,7 +415,7 @@ void Grid::downLogic(){
             numbers[endPosition-4] = sumTwoTiles;
            
             //Shift below tile up
-            numbers[endPosition-8] = numbers[endPosition+12];
+            numbers[endPosition-8] = numbers[endPosition-12];
            
             //Add zero to new tile
             numbers[endPosition-12] = 0;

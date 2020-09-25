@@ -31,8 +31,8 @@
  XXXXXXXXend program if esc is hit
  XXXXXXXXrestart button space
  XXXXXXXXadd instructions
- kill screen
- /move tracker/score
+ kill screen?
+ XXXXXXXXmove tracker/score
  
  
  */
