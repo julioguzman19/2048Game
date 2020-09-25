@@ -198,7 +198,48 @@ void Grid::upLogic(){
         int endPosition = i-1; //top row are the ending vector positions
         int whileCount = 4;
 
-    //adding values
+  
+        //Moving positions up if a zero above them
+            while(whileCount!=0){
+                
+                //Checking if current position zero if yes move below up
+                if(numbers[endPosition] == 0){
+                    if(numbers[endPosition+4] != 0 || numbers[endPosition+8] != 0 ||numbers[endPosition+12] != 0){
+                        hasChanged = true;
+                        numbers[endPosition] = numbers[endPosition+4];
+                        numbers[endPosition+4] = numbers[endPosition+8];
+                        numbers[endPosition+8] = numbers[endPosition+12];
+                        numbers[endPosition+12] = 0;
+                    }
+                    
+                    //Rechecking same position just in case a zero replaced the zero
+                    whileCount -=1;
+                }
+                else if(numbers[endPosition+4] == 0){
+                    if(numbers[endPosition+8] != 0 ||numbers[endPosition+12] != 0){
+                        hasChanged = true;
+                        numbers[endPosition+4] = numbers[endPosition+8];
+                        numbers[endPosition+8] = numbers[endPosition+12];
+                        numbers[endPosition+12] = 0;
+                    }
+                    whileCount -=1;
+                }
+                else if(numbers[endPosition+8] == 0){
+                    if(numbers[endPosition+12] != 0){
+                        hasChanged = true;
+                        numbers[endPosition+8] = numbers[endPosition+12];
+                        numbers[endPosition+12] = 0;
+                    }
+                    whileCount -=1;
+                }
+
+                else{
+                    //Checking next position
+                    whileCount -=1;}
+            }
+    
+    
+        
         //Comparing vertical tiles 1st and 2nd
         if(numbers[endPosition] == numbers[endPosition+4] &&numbers[endPosition]!=0 ){
             hasChanged = true;
@@ -304,6 +345,46 @@ void Grid::downLogic(){
         int endPosition = i+11; //top row are the ending vector positions
         int whileCount = 4;
         
+        
+        //Moving positions up if a zero above them
+        while(whileCount!=0){
+            //Checking if current position zero if yes move down
+            if(numbers[endPosition] == 0){
+                if(numbers[endPosition-4] != 0 || numbers[endPosition-8] != 0 ||numbers[endPosition-12] != 0 ){
+                    hasChanged = true;
+                    numbers[endPosition] = numbers[endPosition-4];
+                    numbers[endPosition-4] = numbers[endPosition-8];
+                    numbers[endPosition-8] = numbers[endPosition-12];
+                    numbers[endPosition-12] = 0;
+                }
+            
+                //Rechecking same position just in case a zero replaced the zero
+                whileCount -=1;
+            }
+            else if(numbers[endPosition-4] == 0){
+                if(numbers[endPosition-8] != 0 ||numbers[endPosition-12] != 0 ){
+                    hasChanged = true;
+                    numbers[endPosition-4] = numbers[endPosition-8];
+                    numbers[endPosition-8] = numbers[endPosition-12];
+                    numbers[endPosition-12] = 0;
+                }
+                whileCount -=1;
+            }
+            else if(numbers[endPosition-8] == 0){
+                if(numbers[endPosition-12] != 0 ){
+                hasChanged = true;
+                numbers[endPosition-8] = numbers[endPosition-12];
+                numbers[endPosition-12] = 0;
+                }
+                whileCount -=1;
+            }
+
+            else{
+                //Checking next position
+                whileCount -=1;}
+        }
+        
+        
         //Comparing vertical tiles starting from bottom
         if(numbers[endPosition] == numbers[endPosition-4] &&numbers[endPosition]!=0){
             hasChanged = true;
@@ -405,6 +486,46 @@ void Grid::rightLogic(){
         int sumTwoTiles = 0;
         int endPosition = i*3+(i-1);
         int whileCount = 4;
+        
+        //Moving positions to the right if a position to the right of them
+        while(whileCount!=0){
+
+            //Checking if current position zero if yes move to right
+            if(numbers[endPosition] == 0){
+                if(numbers[endPosition-1] != 0 || numbers[endPosition-2] != 0 ||numbers[endPosition-3] != 0){
+                    hasChanged = true;
+                    numbers[endPosition] = numbers[endPosition-1];
+                    numbers[endPosition-1] = numbers[endPosition-2];
+                    numbers[endPosition-2] = numbers[endPosition-3];
+                    numbers[endPosition-3] = 0;
+                }
+                //Rechecking same position just in case a zero replaced the zero
+                whileCount -=1;
+            }
+            else if(numbers[endPosition-1] == 0){
+                if(numbers[endPosition-2] != 0 ||numbers[endPosition-3] != 0){
+                    hasChanged = true;
+                    numbers[endPosition-1] = numbers[endPosition-2];
+                    numbers[endPosition-2] = numbers[endPosition-3];
+                    numbers[endPosition-3] = 0;
+                }
+                whileCount -=1;
+            }
+            else if(numbers[endPosition-2] == 0){
+                if(numbers[endPosition-3] != 0){
+                    hasChanged = true;
+                    numbers[endPosition-2] = numbers[endPosition-3];
+                    numbers[endPosition-3] = 0;
+                }
+                whileCount -=1;
+            }
+
+            else{
+                //Checking next position
+                whileCount -=1;}
+            
+        }
+        
         
         //Comparing horizontal tiles (right to left) 4th and 3rd
         if(numbers[endPosition] == numbers[endPosition-1] &&numbers[endPosition]!=0){
@@ -510,6 +631,49 @@ void Grid::leftLogic(){
         int sumTwoTiles = 0;
         int endPosition = i*4 - 4;
         int whileCount = 4;
+        
+        
+        //Moving positions to the right if a position to the right of them
+        while(whileCount!=0){
+
+            //Checking if current position zero if yes move to right
+            if(numbers[endPosition] == 0){
+                if(numbers[endPosition+1] != 0 ||numbers[endPosition+2] != 0 ||numbers[endPosition+3] != 0  ){
+                    hasChanged = true;
+                    numbers[endPosition] = numbers[endPosition+1];
+                    numbers[endPosition+1] = numbers[endPosition+2];
+                    numbers[endPosition+2] = numbers[endPosition+3];
+                    numbers[endPosition+3] = 0;
+                    
+                }
+
+                //Rechecking same position just in case a zero replaced the zero
+                whileCount -=1;
+            }
+            else if(numbers[endPosition+1] == 0){
+                if(numbers[endPosition+2] != 0 ||numbers[endPosition+3] != 0 ){
+                    hasChanged = true;
+                    numbers[endPosition+1] = numbers[endPosition+2];
+                    numbers[endPosition+2] = numbers[endPosition+3];
+                    numbers[endPosition+3] = 0;
+                    
+                }
+                whileCount -=1;
+            }
+            else if(numbers[endPosition+2] == 0){
+                if(numbers[endPosition+3] != 0 ){
+                    hasChanged = true;
+                    numbers[endPosition+2] = numbers[endPosition+3];
+                    numbers[endPosition+3] = 0;
+                }
+                whileCount -=1;
+            }
+
+            else{
+                //Checking next position
+                whileCount -=1;}
+            
+        }
         
         //Comparing horizontal tiles (right to left) 4th and 3rd
         if(numbers[endPosition] == numbers[endPosition+1] &&numbers[endPosition]!=0){
