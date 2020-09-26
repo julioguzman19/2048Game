@@ -59,8 +59,9 @@ Grid::Grid(){
     color1024 =sf::Color(74,74,74);
     color2048 =sf::Color(0,0,0);
     
-    font.loadFromFile("../ArialBlack.ttf");
-    font2.loadFromFile("../Helvetica.ttc");
+    font.loadFromFile("/Users/julioguzman/2048Game/ArialBlack.ttf");
+    font2.loadFromFile("/Users/julioguzman/2048Game/Helvetica.ttc");
+
 }
 
 //Use numbers and tiles and draw color in window
